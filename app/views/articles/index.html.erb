@@ -1,1 +1,11 @@
-<h1>Hello Rails</h1>
+<h1>Articles</h1>
+
+<ul>
+  <!-- this article is coming from the articles 'articles_controller.rb' file -->
+  <% @articles.each do |article| %>
+  <li><%= article.title %></li>
+  <p>Created at : <%= article.created_at %></p>
+  <p>Updated at : <%= article.updated_at %></p>
+  <p><%= article.body %></p>
+  <% end %>
+</ul>

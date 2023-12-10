@@ -109,3 +109,20 @@ Note: now the application is running fine because of the database is migrated su
 
    d. see the particular entry in the database
    `Article.find(1)` // here the user will get the first element of the table Article
+
+# List of Articles
+
+1. To fetch all the actions from the database.
+2. In the article_controller.rb file `@article = Article.all` means, we can reference in `app/views/articles/index.html.erb`
+3. You can access the @article anywhere in the app folder, without importing it again and again
+4. you can use the `@articles` in `app/views/articles/index.html.erb` file, This would be coming from the 'article controller file'
+
+   ```
+   <ul>
+        <% @articles.each do |article| %>
+           <li>
+               <%= article.title %>
+           </li>
+       <% end %>
+   </ul>
+   ```
