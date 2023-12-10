@@ -172,3 +172,106 @@ If you want to show the particular data on the particular route, you can add a r
         </a>
     </li>
 ```
+
+# Resourceful Routing
+
+1. Whenever we have such a combination of routes, controller actions, and views that work together to perform CRUD operations on an entity, we call that entity a resource.
+2. Rails provides "resources" to map all conventional routed for a collection of resources"
+   example: articles
+3. in `config/routes.rb` file, replace get routes to `resources :articles`
+
+```
+Rails.application.routes.draw do
+  root "articles#index"
+
+  resources :articles
+end
+```
+
+4. this method sets up URL and path helper methods that we can for routing
+   - we need to add suffix of `_url` or `_path` form the name of the helpers
+     Example: `article_path`
+   - helper returns the "/articles/#{article.id}" when given an article.
+   - we can write this route with 3 diffrent type:
+     a. href="/articles/<%= article.id %>  
+      b. href="<%= articles_path(article) %>
+     c. <%= link_to article.title, article> -- link_is the method, article.title is the element that needs to be rendered, article is the object returned from the @articles list
+
+## Creating a new Article
+
+How the crud operation works in the web application 1. User requests a form to flll out. 2. User submits the form. 3. If no error then the resource is created and some kind of confirmation is displayed, else error is displayed.
+Here, the above steps are conventionally handled by the `new` and `create` actions.
+
+### implementation in the articles_controller.rb
+
+1. `new` action instantiates a new article but does not save it. This will be used in the view when building the form.
+   a. create `app/views/articles/new.html.erb`.
+
+2. `create` action instantiates a new article with values for the title and body, and attempts to save it.
+   a. if the article is `successfully` created, the action redirects the browser to the article's page at "http://localhost:3000/articles/#{@article.id}.
+   b. in case of `error` the action "redisplays the form" with the 422 Unprocessable Entity.
+
+   ```
+   def create
+        @article = Article.new(title:"...", body:"...")
+
+        if @article.save
+            redirect_to @article
+            # if the value is saved successfully then it redirects to that particular page
+        else
+            render :new, status: :unprocessable_entity
+            #if the values is not saved it will go to the same new page, with error <422>
+        end
+     end
+   ```
+
+   c. `redirect_to` will make a new request. Is is important to use "redirect_to" after mutating the database or application state. otherwise if the user refreshes the page, the browser will make the same request, and the mutation will be repeated.
+
+   d. `render` will render the specified view for current request.
+
+### Form Builder
+
+Rails provides a feature called the form builder. Using a form builder we can write minimal amount of code to output a form that us fully configured and follows Rails conventions.
+
+```
+<%= form_with model: @article do |form| %>
+  <div>
+    <%= form.label :title %><br>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :body %><br>
+    <%= form.text_area :body %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
+```
+
+- `form_with` is the helper method which instantiates a form builder.
+- in we ise form.label and form.text for appropriate for elements
+
+-The Above form_with call will look like:
+
+```
+<form action="/articles" accept-charset="UTF-8" method="post">
+  <input type="hidden" name="authenticity_token" value="...">
+
+  <div>
+    <label for="article_title">Title</label><br>
+    <input type="text" name="article[title]" id="article_title">
+  </div>
+
+  <div>
+    <label for="article_body">Body</label><br>
+    <textarea name="article[body]" id="article_body"></textarea>
+  </div>
+
+  <div>
+    <input type="submit" name="commit" value="Create Article" data-disable-with="Create Article">
+  </div>
+</form>
+```
