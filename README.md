@@ -162,3 +162,13 @@ If you want to show the particular data on the particular route, you can add a r
     <h1><%= @article.title %></h1>
     <h4><%= @article.body %></h4>
 ```
+
+- to make the clickable link on the /articles page, in the index page inside "li" tag
+
+```
+    <li>
+        <a href="/articles/<%= article.id %>">
+            <%= article.title %>
+        </a>
+    </li>
+```
