@@ -134,6 +134,31 @@ Note: now the application is running fine because of the database is migrated su
 
 # CRUD with rails
 
-## Showing a single article
+## Showing a single article according to the param
 
-1.
+If you want to show the particular data on the particular route, you can add a route and pass the param in the
+
+- in config/routes.rb, add route
+
+```
+    get "/articles/:id", to: 'articles#show'
+```
+
+- in articles_controller.rb file
+
+```
+    class ArticlesController < ApplicationController
+        def show
+            @article = Article.find(params[:id])
+        end
+    end
+```
+
+- create a file name "show" with "html.erb" extension, `views/articles/show.html.erb`
+
+- add the data in the show to render on the ui
+
+```
+    <h1><%= @article.title %></h1>
+    <h4><%= @article.body %></h4>
+```
