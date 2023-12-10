@@ -132,4 +132,8 @@ Note: now the application is running fine because of the database is migrated su
    1. <% %> is for loop and other conditional statement.
    2. <%= %> is for outputing the returned values.
 
-6.
+# CRUD with rails
+
+## Showing a single article
+
+1.
