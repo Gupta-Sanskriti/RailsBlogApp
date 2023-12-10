@@ -126,3 +126,10 @@ Note: now the application is running fine because of the database is migrated su
        <% end %>
    </ul>
    ```
+
+5. <% %> and <%= %>, are the ERB which is a templating system that evaluates Ruby code in the document.
+
+   1. <% %> is for loop and other conditional statement.
+   2. <%= %> is for outputing the returned values.
+
+6.
