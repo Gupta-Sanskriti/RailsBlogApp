@@ -314,4 +314,123 @@ end
 
 Explanation:
 a. full_messages_for : this returns an array of user-friendly error messages for a specified attribute. if no errors the array will be empty.
-b.
+
+# Updating an Article
+
+1. Process of Updating a data:
+   a. User requests to edit the data
+   b. If there are errors then the errors are displayed
+   c. Else resource is updated
+   d. `edit` and `update` handles the updating process
+2. In this example we have two methods for handling update request:
+   a. `update` method which updates the record if it's valid (no errors).
+   i. It takes one parameter `article_params`, which is created by calling `article_params` method from the controller.
+   ii. It takes one argument which is a hash with key value pairs representing attributes and their values.
+   b. `edit`
+
+## using Partials to share View Code.
+
+- A partial is just another view file.
+- To render a partial you use the `<%= render 'partial name', locals: {} %>`.
+- The local variable can be used inside the partial to access variables passed from outside.
+  Example: `<%= render "form" , article: @article %>`
+
+<!-- update continues above -->
+
+<h1> Common Findings for ruby on rails </h1>
+
+## HTTP Verb / Path / Controller#Action / Purpose
+
+1. GET /articles - articles#index - Displays a list of all articles.
+2. GET /articles/new - articles#new - Displays a form to create a new article.
+3. POST /articles - articles#create - Creates a new article.
+4. GET /articles/:id - articles#show - Displays a specific article.
+5. GET /articles/:id/edit - articles#edit - Displays a form to edit a specific article.
+6. PATCH/PUT /articles/:id - articles#update - Updates a specific article.
+7. DELETE /articles/:id - articles#destroy - Deletes a specific article.
+
+## The mapping happens through the naming convention and RESTful routing provided by Rails:
+
+1. Index: Maps to the `index` action in the controller.
+2. New/Create: Maps to `new` and `create` actions respectively.
+3. Show: Maps to the `show` action.
+4. Edit/Update: Maps to `edit` and `update` actions.
+5. Destroy: Maps to the `destroy` action.
+
+- You can also use custom routes and specify the controller and action explicitly:
+
+```
+    get 'custom_route', to: 'controller#action'
+```
+
+## Custom functionality for the custom routes in controller
+
+1. Define a Custom Action in the Controller:
+   ```
+   def custom_action
+       @articles = Article.some_custom_logic
+   end
+   ```
+2. Map the Custom Route in the `config/routes.rb`:
+   ```
+   resources :articles do
+     # Custom route mapped to the custom_action in ArticlesController
+       get '/custom_route', to: 'articles#custom_action'
+   end
+   ```
+
+## render method
+
+1. if you want to render some common component in your file you can just make a partial file,
+   - naming convention of the partial file : `_partial_name.html.erb` in the `app/views/shared/_partial_name.html.erb`
+   - you can render this component in any file by using : `<%= render 'shared/partial_name'>`
+2. Passing a local variable to the Partial
+   - `<%= render 'shared/partial_name', variable_name: @variable %>
+3. Rendering a Different View or Action:
+   - you can render a different view or action within a controller's action
+   ```
+   def some_action
+       render 'some_view'
+   end
+   ```
+4. Rendering Text or JSON
+
+   ```
+   def some_action
+       render plain: "Hello world"
+       render json: {message: 'Success', status: :ok}
+   end
+
+   ```
+
+5. Conditional rendering
+
+   ```
+   <% if some_condition %>
+       <%= render 'partial_one'>
+   <% else %>
+       <%= render 'partial_two'>
+   <% end %>
+   ```
+
+6. Rendering Collection
+   ```
+   <%= render partial: 'shared/partial_name', collection: @items %>
+   ```
+
+## What is Collection in ruby on rails
+
+A set of related data retrieved form the database.
+
+- The `@products` instance variable represents an array of products objects that are returned from the Product model’s `all` class method.
+- `render partial: 'item', collection: @items`
+  This will loop through each item in `@items`, and pass it as an instance variable called `item`. The partial name should be singular
+
+### Collection in Rails Context:
+
+1. Active Record Collections:
+
+- ActiveRecord::Relation objects returned from methods like Model.all and Model.where are considered collections.
+- `@articles = Article.all` : `@articles` represents a collection of all `Article` records fetched from the database.
+
+2. Rendering Collections in Views:
