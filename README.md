@@ -275,3 +275,43 @@ Rails provides a feature called the form builder. Using a form builder we can wr
   </div>
 </form>
 ```
+
+### Using Strong params
+
+1. The `article_params` method is usually used in Rails controllers for handling strong parameters. Strong parameters provide a way to whitelist specific parameters and prevent unexpected or malicious mass assignment of attributes. In this case, `article_params` is permitting only the `:title` and `:body` parameters from the params object, which is usually a hash containing the request parameters passed to the controller action.
+
+2. The `require(:article)` part ensures that the `params` hash must contain an `article` key, and the `permit(:title, :body)` method specifies that only the `title` and `body` parameters are allowed to be mass assigned when creating or updating an article object.
+
+```
+private
+   def article_params
+        params.require(:article).permit(:title, :body)
+   end
+```
+
+### Validations and Displaying Error message
+
+- Validations are the rules that are checked before a model object is saved.
+- If any checks fail, save will be aborted and an error message will be displayed.
+- error message will be added to the error attribute of the model.
+
+1. to add the validation in the `app/models/article.rb`
+
+```
+class Article < ApplicationRecord
+    validates :title, presence: true,
+    validates :body, presence: true, length: { minimum: 10}
+end
+```
+
+2. in the `new.html.erb` file add the error message
+
+```
+<% @article.errors.full_messages_for(:title).each do |message| %>
+    <%= message %>
+<% end %>
+```
+
+Explanation:
+a. full_messages_for : this returns an array of user-friendly error messages for a specified attribute. if no errors the array will be empty.
+b.

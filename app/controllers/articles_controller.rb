@@ -13,7 +13,7 @@ class ArticlesController < ApplicationController
   end
 
   def create
-    @article = Article.new(article_params)
+    @article = Article.new(title: params[:title], body: params[:body])
 
     if @article.save
       redirect_to @article  # if the value is saved successfully then it redirects to that particular page
@@ -22,8 +22,8 @@ class ArticlesController < ApplicationController
     end
   end
 
-  private
-    def article_params
-      params.require(:article).permit(:title, :body)
-    end
+  # private
+  #   def article_params
+  #     params.require(:article).permit(:title, :body) 
+  #   end
 end
