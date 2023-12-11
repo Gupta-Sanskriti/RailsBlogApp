@@ -1,2 +1,6 @@
 <h1><%= @article.title %></h1>
 <h4><%= @article.body %></h4>
+
+<ul>
+  <li><%= link_to 'Edit this Blog', edit_article_path(@article) %></li>
+</ul>

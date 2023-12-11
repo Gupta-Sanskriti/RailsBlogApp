@@ -434,3 +434,14 @@ A set of related data retrieved form the database.
 - `@articles = Article.all` : `@articles` represents a collection of all `Article` records fetched from the database.
 
 2. Rendering Collections in Views:
+
+## How form code is showing prefilled value in the form.
+
+1. When you use `form_with model: @article`, Rails automatically populates the form fields with the attribute values of the `@article` instance variable.
+
+- `form_with model: @article do |form|` : This line creates a form associated with `@article` object. The `form` variable within the block represents this form.
+- `<%= form.label :title %>` and`<%= form.text_field :title %>` : These lines generate a label and a text field for the `:title` attribute of the `@article` object.
+- `<%= form.label :body %>` and `<%= form.text_area :body %>` : Similarly, these lines create a label and a text area for the `:body` attribute of the` @article` object.
+- `<%= form.submit %>` : Renders a submit button for the form.
+
+2. When you specify `model: @article`, Rails infers that this form is associated with an ActiveRecord object `(@article)`, and it automatically populates the form fields with the attribute values from `@article`.
